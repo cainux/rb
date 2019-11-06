@@ -1,7 +1,8 @@
 ﻿using RB.Core;
+using System;
 using System.IO;
 
-namespace RB.Console
+namespace RB.ConsoleRunner
 {
     class Program
     {
@@ -16,19 +17,20 @@ namespace RB.Console
 
             var input = File.ReadAllLines(inputFile);
 
-            System.Console.WriteLine("--- INPUT ---");
+            Console.WriteLine("--- INPUT ---");
 
             foreach (var line in input)
             {
-                System.Console.WriteLine(line);
+                Console.WriteLine(line);
             }
 
             var simulation = new Simulation(input);
             var result = simulation.Run();
 
-            System.Console.WriteLine("--- OUTPUT ---");
+            Console.WriteLine(string.Empty);
+            Console.WriteLine("--- OUTPUT ---");
 
-            System.Console.Write(result);
+            Console.Write(result);
         }
     }
 }
