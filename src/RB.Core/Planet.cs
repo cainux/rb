@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace RB.Core
 {
@@ -7,26 +6,39 @@ namespace RB.Core
     {
         private int width;
         private int height;
-        private IList<Robot> robots;
-        private HashSet<Tuple<int, int>> scents;
+        private HashSet<(int x, int y)> scents;
 
         public Planet(int width, int height)
         {
             this.width = width;
             this.height = height;
 
-            robots = new List<Robot>();
-            scents = new HashSet<Tuple<int, int>>();
+            scents = new HashSet<(int x, int y)>();
         }
 
-        public void AddRobot(int x, int y, char orientation, string instructions)
+        public bool WithinWorld(int x, int y)
         {
-            throw new NotImplementedException();
+            if (0 <= x && x <= width && 0 <= y && y <= height)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
-        public void RunRobots()
+        public void LeaveScent(int x, int y)
         {
-            throw new NotImplementedException();
+            if (!scents.Contains((x, y)))
+            {
+                scents.Add((x, y));
+            }
+        }
+
+        public bool CheckScent(int x, int y)
+        {
+            return scents.Contains((x, y));
         }
     }
 }

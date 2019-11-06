@@ -27,6 +27,15 @@ namespace RB.Tests
 
         // Combination of movements
         [InlineData(5, 5, 0, 0, 'N', "FRFLFRRFLFF", 3, 1, 'E', false)]
+
+        // Move off the world (test all 4 directions)
+        [InlineData(0, 0, 0, 0, 'N', "F", 0, 0, 'N', true)]
+        [InlineData(0, 0, 0, 0, 'E', "F", 0, 0, 'E', true)]
+        [InlineData(0, 0, 0, 0, 'S', "F", 0, 0, 'S', true)]
+        [InlineData(0, 0, 0, 0, 'W', "F", 0, 0, 'W', true)]
+
+        // Move off this thin world
+        [InlineData(0, 5, 0, 0, 'N', "FFFFFFFFFFFFFF", 0, 5, 'N', true)]
         public void Movement(
             int planetWidth, int planetHeight,
             int startX, int startY, char startOrientation, string instructions,
@@ -38,10 +47,31 @@ namespace RB.Tests
 
             // Act
             robot.Run();
-            var actual = robot.Status;
 
             // Assert
-            actual.Should().Be($"{expectedX} {expectedY} {expectedOrientation}" + (expectedLost ? " LOST" : string.Empty));
+            robot.Status.Should().Be($"{expectedX} {expectedY} {expectedOrientation}" + (expectedLost ? " LOST" : string.Empty));
+
+            if (expectedLost)
+            {
+                mars.CheckScent(expectedX, expectedY).Should().BeTrue();
+            }
+        }
+
+        [Fact]
+        public void ScentIsObeyed()
+        {
+            // Arrange
+            var mars = new Planet(5, 3);
+            var robot1 = new Robot(0, 0, 'N', "FFFFFFFFFF", mars);
+            var robot2 = new Robot(0, 0, 'N', "FFFFFFFFFF", mars);
+
+            // Act
+            robot1.Run();
+            robot2.Run();
+
+            // Assert
+            robot1.Status.Should().Be("0 3 N LOST");
+            robot2.Status.Should().Be("0 3 N");
         }
     }
 }

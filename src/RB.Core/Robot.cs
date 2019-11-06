@@ -38,8 +38,19 @@ namespace RB.Core
         {
             var nextPosition = MovementHelper.GetNextPosition[orientation](x, y);
 
-            x = nextPosition.Item1;
-            y = nextPosition.Item2;
+            if (planet.WithinWorld(nextPosition.x, nextPosition.y))
+            {
+                x = nextPosition.x;
+                y = nextPosition.y;
+            }
+            else
+            {
+                if (!planet.CheckScent(x, y))
+                {
+                    isLost = true;
+                    planet.LeaveScent(x, y);
+                }
+            }
         }
 
         private void Right()
@@ -61,12 +72,17 @@ namespace RB.Core
             foreach (var i in instructions)
             {
                 commandHandlers[i]();
+
+                if (isLost)
+                {
+                    break;
+                }
             }
         }
 
         private static class MovementHelper
         {
-            public static readonly Dictionary<char, Func<int, int, (int, int)>> GetNextPosition = new Dictionary<char, Func<int, int, (int, int)>>
+            public static readonly Dictionary<char, Func<int, int, (int x, int y)>> GetNextPosition = new Dictionary<char, Func<int, int, (int, int)>>
             {
                 { 'N', (x, y) => (x, y + 1) },
                 { 'E', (x, y) => (x + 1, y) },
