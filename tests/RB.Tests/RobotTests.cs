@@ -1,5 +1,7 @@
 using FluentAssertions;
 using RB.Core;
+using System;
+using System.Linq;
 using Xunit;
 
 namespace RB.Tests
@@ -72,6 +74,46 @@ namespace RB.Tests
             // Assert
             actual1.Should().Be("0 3 N LOST");
             actual2.Should().Be("0 3 N");
+        }
+
+        [Fact]
+        public void LargeXThrowsArgumentOutOfRangeException()
+        {
+            // Arrange
+            var mars = new Planet(5, 5);
+
+            // Act
+            var actual = Record.Exception(() => new Robot(51, 0, 'N', "FR", mars));
+
+            // Assert
+            actual.Should().BeOfType<ArgumentOutOfRangeException>();
+        }
+
+        [Fact]
+        public void LargeYThrowsArgumentOutOfRangeException()
+        {
+            // Arrange
+            var mars = new Planet(5, 5);
+
+            // Act
+            var actual = Record.Exception(() => new Robot(0, 51, 'N', "FR", mars));
+
+            // Assert
+            actual.Should().BeOfType<ArgumentOutOfRangeException>();
+        }
+
+        [Fact]
+        public void LongInstructionsThrowsArgumentException()
+        {
+            // Arrange
+            var mars = new Planet(5, 5);
+            var instructions = new string(Enumerable.Repeat('F', 101).ToArray());
+
+            // Act
+            var actual = Record.Exception(() => new Robot(0, 0, 'N', instructions, mars));
+
+            // Assert
+            actual.Should().BeOfType<ArgumentException>();
         }
     }
 }

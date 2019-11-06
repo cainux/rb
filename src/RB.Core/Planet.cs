@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Ardalis.GuardClauses;
+using System.Collections.Generic;
 
 namespace RB.Core
 {
@@ -10,6 +11,9 @@ namespace RB.Core
 
         public Planet(int width, int height)
         {
+            Guard.Against.OutOfRange(width, nameof(width), 0, 50);
+            Guard.Against.OutOfRange(height, nameof(height), 0, 50);
+
             this.width = width;
             this.height = height;
 

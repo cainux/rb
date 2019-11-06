@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using RB.Core;
+using System;
 using Xunit;
 
 namespace RB.Tests
@@ -46,6 +47,26 @@ namespace RB.Tests
 
             // Assert
             actual.Should().Be(expected);
+        }
+
+        [Fact]
+        public void LargeWidthThrowsArgumentOutOfRangeException()
+        {
+            // Act
+            var actual = Record.Exception(() => new Planet(51, 5));
+
+            // Assert
+            actual.Should().BeOfType<ArgumentOutOfRangeException>();
+        }
+
+        [Fact]
+        public void LargeHeightThrowsArgumentOutOfRangeException()
+        {
+            // Act
+            var actual = Record.Exception(() => new Planet(5, 51));
+
+            // Assert
+            actual.Should().BeOfType<ArgumentOutOfRangeException>();
         }
     }
 }

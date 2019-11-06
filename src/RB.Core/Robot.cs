@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Ardalis.GuardClauses;
+using System;
 using System.Collections.Generic;
 
 namespace RB.Core
@@ -16,6 +17,12 @@ namespace RB.Core
 
         public Robot(int x, int y, char orientation, string instructions, Planet planet)
         {
+            Guard.Against.OutOfRange(x, nameof(x), 0, 50);
+            Guard.Against.OutOfRange(y, nameof(y), 0, 50);
+
+            if (instructions.Length > 100)
+                throw new ArgumentException("Instructions are limited to 100 characters in length", nameof(instructions));
+
             this.x = x;
             this.y = y;
             this.orientation = orientation;
