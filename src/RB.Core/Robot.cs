@@ -14,8 +14,6 @@ namespace RB.Core
 
         private Dictionary<char, Action> commandHandlers;
 
-        public string Status => $"{x} {y} {orientation}" + (isLost ? " LOST" : string.Empty);
-
         public Robot(int x, int y, char orientation, string instructions, Planet planet)
         {
             this.x = x;
@@ -67,7 +65,7 @@ namespace RB.Core
             orientation = nextOrientation;
         }
 
-        public void Run()
+        public string Run()
         {
             foreach (var i in instructions)
             {
@@ -78,6 +76,8 @@ namespace RB.Core
                     break;
                 }
             }
+
+            return $"{x} {y} {orientation}" + (isLost ? " LOST" : string.Empty);
         }
 
         private static class MovementHelper

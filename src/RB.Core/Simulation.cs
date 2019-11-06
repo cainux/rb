@@ -43,8 +43,7 @@ namespace RB.Core
 
             foreach (var robot in robots)
             {
-                robot.Run();
-                sb.AppendLine(robot.Status);
+                sb.AppendLine(robot.Run());
             }
 
             return sb.ToString();

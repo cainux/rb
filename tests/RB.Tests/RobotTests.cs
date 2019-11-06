@@ -46,10 +46,10 @@ namespace RB.Tests
             var robot = new Robot(startX, startY, startOrientation, instructions, mars);
 
             // Act
-            robot.Run();
+            var actual = robot.Run();
 
             // Assert
-            robot.Status.Should().Be($"{expectedX} {expectedY} {expectedOrientation}" + (expectedLost ? " LOST" : string.Empty));
+            actual.Should().Be($"{expectedX} {expectedY} {expectedOrientation}" + (expectedLost ? " LOST" : string.Empty));
 
             if (expectedLost)
             {
@@ -66,12 +66,12 @@ namespace RB.Tests
             var robot2 = new Robot(0, 0, 'N', "FFFFFFFFFF", mars);
 
             // Act
-            robot1.Run();
-            robot2.Run();
+            var actual1 = robot1.Run();
+            var actual2 = robot2.Run();
 
             // Assert
-            robot1.Status.Should().Be("0 3 N LOST");
-            robot2.Status.Should().Be("0 3 N");
+            actual1.Should().Be("0 3 N LOST");
+            actual2.Should().Be("0 3 N");
         }
     }
 }
